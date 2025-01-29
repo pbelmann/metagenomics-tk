@@ -288,6 +288,9 @@ jobs:
     needs: [codePolicy]
     steps:
       - uses: actions/checkout@v4
+      - name: Copy Github Token to local .nextflow directory
+        run: |
+          mkdir -p .nextflow && cp ~/.nextflow/scm .nextflow
       - name: Test Quickstart
         run: |
           bash ./scripts/test_quickstart.sh || exit 1
@@ -298,6 +301,9 @@ jobs:
     needs: [codePolicy]
     steps:
       - uses: actions/checkout@v4
+      - name: Copy Github Token to local .nextflow directory
+        run: |
+          mkdir -p .nextflow && cp ~/.nextflow/scm .nextflow
       - name: Test Getting Started Part 1 
         run: |
           bash scripts/test_gettingStarted_part1.sh || exit 1
