@@ -291,8 +291,10 @@ jobs:
       - name: Copy Github Token to local .nextflow directory
         run: |
           mkdir -p .nextflow && cp ~/.nextflow/scm .nextflow
+          echo "BRANCH=$(git rev-parse --abbrev-ref HEAD | sed 's/\//\\\//g')" >> $GITHUB_ENV
       - name: Test Quickstart
         run: |
+          sed -i "s/master/${BRANCH}/g" ./scripts/test_quickstart.sh
           bash ./scripts/test_quickstart.sh || exit 1
 
   gettingStarted:
@@ -301,20 +303,25 @@ jobs:
     needs: [codePolicy]
     steps:
       - uses: actions/checkout@v4
-      - name: Copy Github Token to local .nextflow directory
+      - name: Copy Github Token to local .nextflow directory and set correct branch
         run: |
           mkdir -p .nextflow && cp ~/.nextflow/scm .nextflow
+          echo "BRANCH=$(git rev-parse --abbrev-ref HEAD | sed 's/\//\\\//g')" >> $GITHUB_ENV
       - name: Test Getting Started Part 1 
         run: |
+          sed -i "s/master/${BRANCH}/g" scripts/test_gettingStarted_part1.sh
           bash scripts/test_gettingStarted_part1.sh || exit 1
       - name: Test Getting Started Part 2 
         run: |
+          sed -i "s/master/${BRANCH}/g" scripts/test_gettingStarted_part2.sh
           bash scripts/test_gettingStarted_part2.sh || exit 1
       - name: Test Getting Started Part 3 
         run: |
+          sed -i "s/master/${BRANCH}/g" scripts/test_gettingStarted_part3.sh
           bash scripts/test_gettingStarted_part3.sh || exit 1
       - name: Test Getting Started Aggregation Part 
         run: |
+          sed -i "s/master/${BRANCH}/g" scripts/test_gettingStarted_aggregation.sh
           bash scripts/test_gettingStarted_aggregation.sh || exit 1
 
   readmapping:
